@@ -137,7 +137,7 @@ contract Staking is ChainlinkClient {
     /// @param _tokenAddress L'adresse du token 
     function stakeOtherToken(uint256 _amount, address _tokenAddress) external {
         require(_amount > 0, "amount = 0");
-        require(tokensStakable[_tokenAddress].isStakable = true, "Not stakable");
+        require(tokensStakable[_tokenAddress].isStakable == true, "Not stakable");
         require(stakesOther[msg.sender].length < 1000, "");
 
         IERC20(_tokenAddress).transferFrom(msg.sender, address(this), _amount);
