@@ -1,6 +1,6 @@
 //SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity ^0.8.24;
 
 /// @title Deux contrats intelligents pour la création de 2 tokens
 /// @author Thibaut Baudry
