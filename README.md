@@ -4,7 +4,9 @@
 
 Projet réalisé dans le cadre de la formation développeur blockchain [ALYRA](https://alyra.fr/).
 
-![Logo](https://github.com/ThibautBaudry/Coup2Pousse/blob/main/Coup2Pousse.png)
+<p align="center">
+  <img src="https://github.com/ThibautBaudry/Coup2Pousse/blob/main/Coup2Pousse.png" alt="Logo" width="400">
+</p>
 
 ## Sommaire
 
