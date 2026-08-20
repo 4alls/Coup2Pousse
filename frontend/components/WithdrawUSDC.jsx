@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from "react"
-import { Heading, Flex, Button, Input, useToast } from "@chakra-ui/react"
+import { FormControl, FormLabel, Input, Button, Stack, useToast } from "@chakra-ui/react"
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
 import { contractStakingAddress, contractStakingAbi } from "@/constants"
+import FormCard from "./ui/FormCard"
 
 const WithdrawUSDC = ({ refetch }) => {
 
@@ -55,22 +56,25 @@ const WithdrawUSDC = ({ refetch }) => {
     })
 
     return (
-        <>
-            <Heading as='h2' size='xl' mt='1rem'>
-                Withdraw USDC
-            </Heading>
-            <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                width="100%"
-                mt="1rem"
-            >
-                <Input placeholder='Amount' value={addedAmount} onChange={(e) => setaddedAmount(e.target.value)} />
-                <Input placeholder='Address USDC' value={addedAddrUSDC} onChange={(e) => setaddedAddrUSDC(e.target.value)} />
-                <Input placeholder='Index Stake' value={addedStakingIndex} onChange={(e) => setaddedStakingIndex(e.target.value)} />
-                <Button colorScheme='purple' onClick={WithdrawUSDC}>{isPending ? 'is ..' : 'Withdraw'} </Button>
-            </Flex>
-        </>
+        <FormCard icon="📤" title="Withdraw USDC" description="Retire une partie de ton stake USDC.">
+            <Stack spacing={3}>
+                <FormControl>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Montant</FormLabel>
+                    <Input placeholder='0.0' value={addedAmount} onChange={(e) => setaddedAmount(e.target.value)} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Adresse USDC</FormLabel>
+                    <Input placeholder='0x...' value={addedAddrUSDC} onChange={(e) => setaddedAddrUSDC(e.target.value)} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Index du stake</FormLabel>
+                    <Input placeholder='0' value={addedStakingIndex} onChange={(e) => setaddedStakingIndex(e.target.value)} />
+                </FormControl>
+                <Button colorScheme='brand' onClick={WithdrawUSDC} isLoading={isPending} loadingText="Envoi..." w="100%">
+                    Withdraw
+                </Button>
+            </Stack>
+        </FormCard>
   )
 }
 

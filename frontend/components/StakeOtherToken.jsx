@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from "react"
-import { Heading, Flex, Button, Input, useToast } from "@chakra-ui/react"
+import { FormControl, FormLabel, Input, Button, Stack, useToast } from "@chakra-ui/react"
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
 import { contractStakingAddress, contractStakingAbi } from "@/constants"
+import FormCard from "./ui/FormCard"
 
 const StakeOtherToken = ({ refetch }) => {
 
@@ -53,21 +54,21 @@ const StakeOtherToken = ({ refetch }) => {
     })
 
     return (
-        <>
-            <Heading as='h2' size='xl' mt='1rem'>
-                Stake Token
-            </Heading>
-            <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                width="100%"
-                mt="1rem"
-            >
-                <Input placeholder='Amount' value={addedAmount} onChange={(e) => setaddedAmount(e.target.value)} />
-                <Input placeholder='Address Token' value={addedAddrOther} onChange={(e) => setaddedAddrOther(e.target.value)} />
-                <Button colorScheme='purple' onClick={StakeOtherToken}>{isPending ? 'is ..' : 'Stake'} </Button>
-            </Flex>
-        </>
+        <FormCard icon="🪙" title="Stake un autre token" description="Dépose un token enregistré comme stakable.">
+            <Stack spacing={3}>
+                <FormControl>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Montant</FormLabel>
+                    <Input placeholder='0.0' value={addedAmount} onChange={(e) => setaddedAmount(e.target.value)} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Adresse du token</FormLabel>
+                    <Input placeholder='0x...' value={addedAddrOther} onChange={(e) => setaddedAddrOther(e.target.value)} />
+                </FormControl>
+                <Button colorScheme='brand' onClick={StakeOtherToken} isLoading={isPending} loadingText="Envoi..." w="100%">
+                    Stake
+                </Button>
+            </Stack>
+        </FormCard>
   )
 }
 

@@ -1,14 +1,29 @@
 "use client"
-import { Flex, Text } from '@chakra-ui/react'
+import { Flex, Text, Link } from '@chakra-ui/react'
 
 const Footer = () => {
   return (
     <Flex
-        p="2rem"
+        as="footer"
         justifyContent="center"
         alignItems="center"
+        py={6}
+        px={4}
+        mt="auto"
+        borderTop="1px solid"
+        borderColor="whiteAlpha.100"
     >
-        <Text>Thibaut BAUDRY &copy; Alyra {new Date().getFullYear()}</Text>
+        <Text fontSize="sm" color="whiteAlpha.500">
+            Thibaut BAUDRY &copy; Alyra {new Date().getFullYear()} ·{' '}
+            <Link
+                href="https://github.com/ThibautBaudry/Coup2Pousse"
+                isExternal
+                color="whiteAlpha.600"
+                _hover={{ color: 'brand.400' }}
+            >
+                GitHub
+            </Link>
+        </Text>
     </Flex>
   )
 }

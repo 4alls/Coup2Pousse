@@ -1,23 +1,26 @@
 "use client"
 import Header from './Header'
 import Footer from './Footer'
-import { Flex } from '@chakra-ui/react'
+import { Flex, Box } from '@chakra-ui/react'
 
 const Layout = ({ children }) => {
   return (
     <Flex
       direction="column"
       minH="100vh"
-      justifyContent="center"
+      bgGradient="linear(to-b, #070B10, #0B121A)"
     >
         <Header />
-        <Flex
-          grow="1"
-          p="2rem"
-          direction="column"
+        <Box
+          flex="1"
+          w="100%"
+          maxW="1100px"
+          mx="auto"
+          px={{ base: 4, md: 8 }}
+          py={{ base: 6, md: 10 }}
         >
             {children}
-        </Flex>
+        </Box>
         <Footer />
     </Flex>
   )
