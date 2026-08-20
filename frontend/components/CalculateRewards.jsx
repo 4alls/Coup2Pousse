@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from "react"
-import { Heading, Flex, Button, Input, useToast } from "@chakra-ui/react"
+import { FormControl, FormLabel, Input, Button, Stack, useToast } from "@chakra-ui/react"
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
 import { contractStakingAddress, contractStakingAbi } from "@/constants"
+import FormCard from "./ui/FormCard"
 
 const CalculateRewards = ({ refetch }) => {
 
@@ -51,20 +52,17 @@ const CalculateRewards = ({ refetch }) => {
     })
 
     return (
-        <>
-            <Heading as='h2' size='xl' mt='1rem'>
-                Calculate Rewards
-            </Heading>
-            <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                width="100%"
-                mt="1rem"
-            >
-                <Input placeholder='Address CHAINLINK' value={addedAddrChainlink} onChange={(e) => setaddedAddrChainlink(e.target.value)} />
-                <Button colorScheme='purple' onClick={CalculateRewards}>{isPending ? 'is ..' : 'Rewards'} </Button>
-            </Flex>
-        </>
+        <FormCard icon="🧮" title="Calculer les rewards" description="Estime la valeur de tes rewards accumulées.">
+            <Stack spacing={3}>
+                <FormControl>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Adresse Chainlink</FormLabel>
+                    <Input placeholder='0x...' value={addedAddrChainlink} onChange={(e) => setaddedAddrChainlink(e.target.value)} />
+                </FormControl>
+                <Button colorScheme='brand' onClick={CalculateRewards} isLoading={isPending} loadingText="Envoi..." w="100%">
+                    Calculer
+                </Button>
+            </Stack>
+        </FormCard>
   )
 }
 

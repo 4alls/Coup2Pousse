@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from "react"
-import { Heading, Flex, Button, Input, useToast } from "@chakra-ui/react"
+import { FormControl, FormLabel, Input, Button, Stack, useToast } from "@chakra-ui/react"
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
 import { contractStakingAddress, contractStakingAbi } from "@/constants"
+import FormCard from "./ui/FormCard"
 
 const GetRewardsAndSupportProject = ({ refetch }) => {
 
@@ -53,21 +54,21 @@ const GetRewardsAndSupportProject = ({ refetch }) => {
     })
 
     return (
-        <>
-            <Heading as='h2' size='xl' mt='1rem'>
-                Get Rewards And Support Project
-            </Heading>
-            <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                width="100%"
-                mt="1rem"
-            >
-                <Input placeholder='Address PROJET AGRICOLE' value={addedAddrProject} onChange={(e) => setaddedAddrProject(e.target.value)} />
-                <Input placeholder='Address CHAINLINK' value={addedAddrChainlink} onChange={(e) => setaddedAddrChainlink(e.target.value)} />
-                <Button colorScheme='purple' onClick={GetRewardsAndSupport}>{isPending ? 'is ..' : 'GetAndSupport'} </Button>
-            </Flex>
-        </>
+        <FormCard icon="🎁" title="Récupérer & soutenir un projet" description="Réclame tes rewards, partagées 50/50 avec un projet agricole.">
+            <Stack spacing={3}>
+                <FormControl>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Adresse du projet agricole</FormLabel>
+                    <Input placeholder='0x...' value={addedAddrProject} onChange={(e) => setaddedAddrProject(e.target.value)} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Adresse Chainlink</FormLabel>
+                    <Input placeholder='0x...' value={addedAddrChainlink} onChange={(e) => setaddedAddrChainlink(e.target.value)} />
+                </FormControl>
+                <Button colorScheme='brand' onClick={GetRewardsAndSupport} isLoading={isPending} loadingText="Envoi..." w="100%">
+                    Récupérer & soutenir
+                </Button>
+            </Stack>
+        </FormCard>
   )
 }
 

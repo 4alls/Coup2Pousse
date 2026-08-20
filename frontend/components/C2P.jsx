@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react"
-
 import AddAssociation from "./AddAssociation"
 import AddProjetAgricole from "./AddProjetAgricole"
 import DeleteAssociation from "./DeleteAssociation"
@@ -12,25 +10,14 @@ import WithdrawOtherToken from "./WithdrawOtherToken"
 import CalculateRewards from "./CalculateRewards"
 import GetRewardsAndSupportProject from "./GetRewardsAndSupportProject"
 
-import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt, useWatchContractEvent } from 'wagmi'
+import { useAccount, useReadContract } from 'wagmi'
 import { contractProjectsFarmAddress, contractProjectsFarmAbi } from '@/constants'
 
-import {
-    Alert,
-    AlertIcon,
-    AlertTitle,
-    AlertDescription,
-} from '@chakra-ui/react'
-
-import { publicClient } from '../utils/client'
-
-import { parseAbiItem } from 'viem'
-
+import { Tabs, TabList, TabPanels, Tab, TabPanel, SimpleGrid } from '@chakra-ui/react'
 
 const C2P = () => {
 
     const { address } = useAccount();
-    const [events, setEvents] = useState([]);
 
     const { data: addressOfAssociation, error, isPending, refetch } = useReadContract({
       address: contractProjectsFarmAddress,
@@ -40,19 +27,47 @@ const C2P = () => {
   })
 
     return (
-        <>
-        <AddAssociation refetch={refetch} />
-        <AddProjetAgricole refetch={refetch} />
-        <DeleteAssociation refetch={refetch} />
-        <DeleteProjetAgricole refetch={refetch} />
-        <AddToken refetch={refetch} />
-        <StakeUSDC refetch={refetch} />
-        <StakeOtherToken refetch={refetch} />
-        <WithdrawUSDC refetch={refetch} />
-        <WithdrawOtherToken refetch={refetch} />
-        <CalculateRewards refetch={refetch} />
-        <GetRewardsAndSupportProject refetch={refetch} />
-        </>
+        <Tabs colorScheme="brand" variant="soft-rounded" isLazy>
+            <TabList overflowX="auto" pb={2} gap={2} sx={{ '::-webkit-scrollbar': { display: 'none' } }}>
+                <Tab>💧 Staking</Tab>
+                <Tab>🎁 Rewards</Tab>
+                <Tab>🌾 Projets</Tab>
+                <Tab>⚙️ Admin</Tab>
+            </TabList>
+
+            <TabPanels mt={6}>
+                <TabPanel px={0}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
+                        <StakeUSDC refetch={refetch} />
+                        <StakeOtherToken refetch={refetch} />
+                        <WithdrawUSDC refetch={refetch} />
+                        <WithdrawOtherToken refetch={refetch} />
+                    </SimpleGrid>
+                </TabPanel>
+
+                <TabPanel px={0}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
+                        <CalculateRewards refetch={refetch} />
+                        <GetRewardsAndSupportProject refetch={refetch} />
+                    </SimpleGrid>
+                </TabPanel>
+
+                <TabPanel px={0}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
+                        <AddAssociation refetch={refetch} />
+                        <DeleteAssociation refetch={refetch} />
+                        <AddProjetAgricole refetch={refetch} />
+                        <DeleteProjetAgricole refetch={refetch} />
+                    </SimpleGrid>
+                </TabPanel>
+
+                <TabPanel px={0}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
+                        <AddToken refetch={refetch} />
+                    </SimpleGrid>
+                </TabPanel>
+            </TabPanels>
+        </Tabs>
     )
 }
 
