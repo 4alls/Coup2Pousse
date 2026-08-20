@@ -40,13 +40,12 @@ Le protocole est en cours de modernisation vers des standards DeFi plus composab
 | `StakingVaultFactory.sol` | Déploie et administre les vaults (un par token stakable) |
 | `Staking.sol` | Orchestrateur : calcule la valeur des rewards via Chainlink et exécute le partage 50/50 staker/projet |
 
-> 🚧 **En cours** : un AMM (`LiquidityPool.sol`) pour donner un marché on-chain au C2P (paire C2P/USDC, swap, liquidité) — voir la roadmap ci-dessous.
-
 ### Roadmap DeFi
 
 - [x] Vaults ERC-4626 pour les positions de staking (composables, transférables)
-- [ ] AMM à produit constant pour la paire C2P/USDC (liquidité, swap)
 - [ ] Frontend branché sur la nouvelle architecture par vaults
+
+Un AMM (paire C2P/USDC) a été envisagé pour donner un marché on-chain au C2P, mais mis de côté pour l'instant.
 
 ## Stack technique
 
