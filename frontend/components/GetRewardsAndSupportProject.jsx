@@ -11,17 +11,19 @@ const GetRewardsAndSupportProject = ({ refetch }) => {
     const { address } = useAccount();
     const toast = useToast();
 
+    const [addedVaultToken, setaddedVaultToken] = useState('');
     const [addedAddrProject, setaddedAddrProject] = useState('');
     const [addedAddrChainlink, setaddedAddrChainlink] = useState('');
 
     const { data: hash, isPending, writeContract } = useWriteContract({
         mutation: {
             onSuccess: () => {
+                setaddedVaultToken('');
                 setaddedAddrProject('');
                 setaddedAddrChainlink('');
                 refetch();
                 toast({
-                    title: "Get Rewards And Support",
+                    title: "Rewards récupérées et projet soutenu",
                     status: "success",
                     duration: 3000,
                     isClosable: true,
@@ -43,7 +45,7 @@ const GetRewardsAndSupportProject = ({ refetch }) => {
             address: contractStakingAddress,
             abi: contractStakingAbi,
             functionName: 'getRewardAndSupportProject',
-            args: [addedAddrChainlink, addedAddrChainlink],
+            args: [addedVaultToken, addedAddrProject, addedAddrChainlink],
             account: address,
         })
     }
@@ -54,8 +56,12 @@ const GetRewardsAndSupportProject = ({ refetch }) => {
     })
 
     return (
-        <FormCard icon="🎁" title="Récupérer & soutenir un projet" description="Réclame tes rewards, partagées 50/50 avec un projet agricole.">
+        <FormCard icon="🎁" title="Récupérer & soutenir un projet" description="Réclame tes rewards sur un vault, partagées 50/50 avec un projet agricole.">
             <Stack spacing={3}>
+                <FormControl>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Adresse du token stakable (vault)</FormLabel>
+                    <Input placeholder='0x...' value={addedVaultToken} onChange={(e) => setaddedVaultToken(e.target.value)} />
+                </FormControl>
                 <FormControl>
                     <FormLabel fontSize="sm" color="whiteAlpha.600">Adresse du projet agricole</FormLabel>
                     <Input placeholder='0x...' value={addedAddrProject} onChange={(e) => setaddedAddrProject(e.target.value)} />

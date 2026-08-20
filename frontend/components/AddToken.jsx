@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { FormControl, FormLabel, Input, Button, Stack, useToast } from "@chakra-ui/react"
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
-import { contractStakingAddress, contractStakingAbi } from "@/constants"
+import { contractStakingVaultFactoryAddress, contractStakingVaultFactoryAbi } from "@/constants"
 import FormCard from "./ui/FormCard"
 
 const AddToken = ({ refetch }) => {
@@ -12,16 +12,20 @@ const AddToken = ({ refetch }) => {
     const toast = useToast();
 
     const [addedName, setaddedName] = useState('');
+    const [addedSymbol, setaddedSymbol] = useState('');
     const [addedAddr, setaddedAddr] = useState('');
+    const [addedDivisor, setaddedDivisor] = useState('');
 
     const { data: hash, isPending, writeContract } = useWriteContract({
         mutation: {
             onSuccess: () => {
                 setaddedName('');
+                setaddedSymbol('');
                 setaddedAddr('');
+                setaddedDivisor('');
                 refetch();
                 toast({
-                    title: "Le token a bien été ajouté",
+                    title: "Le vault de staking a bien été créé",
                     status: "success",
                     duration: 3000,
                     isClosable: true,
@@ -40,10 +44,10 @@ const AddToken = ({ refetch }) => {
 
     const AddToken = async() => {
         writeContract({
-            address: contractStakingAddress,
-            abi: contractStakingAbi,
-            functionName: 'addToken',
-            args: [addedName, addedAddr],
+            address: contractStakingVaultFactoryAddress,
+            abi: contractStakingVaultFactoryAbi,
+            functionName: 'createVault',
+            args: [addedName, addedSymbol, addedAddr, Number(addedDivisor)],
             account: address,
         })
     }
@@ -54,18 +58,26 @@ const AddToken = ({ refetch }) => {
     })
 
     return (
-        <FormCard icon="⚙️" title="Ajouter un token stakable" description="Réservé au propriétaire du contrat.">
+        <FormCard icon="⚙️" title="Créer un vault de staking" description="Réservé au propriétaire de la factory.">
             <Stack spacing={3}>
                 <FormControl>
-                    <FormLabel fontSize="sm" color="whiteAlpha.600">Nom</FormLabel>
-                    <Input placeholder='Nom du token' value={addedName} onChange={(e) => setaddedName(e.target.value)} />
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Nom des parts</FormLabel>
+                    <Input placeholder='Staked ...' value={addedName} onChange={(e) => setaddedName(e.target.value)} />
                 </FormControl>
                 <FormControl>
-                    <FormLabel fontSize="sm" color="whiteAlpha.600">Adresse</FormLabel>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Symbole des parts</FormLabel>
+                    <Input placeholder='s...' value={addedSymbol} onChange={(e) => setaddedSymbol(e.target.value)} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Adresse du token</FormLabel>
                     <Input placeholder='0x...' value={addedAddr} onChange={(e) => setaddedAddr(e.target.value)} />
                 </FormControl>
+                <FormControl>
+                    <FormLabel fontSize="sm" color="whiteAlpha.600">Diviseur du taux de reward</FormLabel>
+                    <Input placeholder='1' value={addedDivisor} onChange={(e) => setaddedDivisor(e.target.value)} />
+                </FormControl>
                 <Button colorScheme='brand' onClick={AddToken} isLoading={isPending} loadingText="Envoi..." w="100%">
-                    Ajouter
+                    Créer le vault
                 </Button>
             </Stack>
         </FormCard>

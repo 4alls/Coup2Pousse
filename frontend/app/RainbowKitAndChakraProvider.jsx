@@ -23,7 +23,7 @@ import theme from '@/theme';
 const config = getDefaultConfig({
     appName: 'Coup2Pousse',
     projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_ID,
-    chains: [sepolia],
+    chains: [sepolia, hardhat],
     ssr: true, // If your dApp uses server side rendering (SSR)
 });
 

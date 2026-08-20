@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import { FormControl, FormLabel, Input, Button, Stack, useToast } from "@chakra-ui/react"
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
-import { contractStakingAddress, contractStakingAbi } from "@/constants"
+import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
+import { contractStakingVaultFactoryAddress, contractStakingVaultFactoryAbi, stakingVaultAbi } from "@/constants"
 import FormCard from "./ui/FormCard"
 
 const WithdrawOtherToken = ({ refetch }) => {
@@ -13,14 +13,20 @@ const WithdrawOtherToken = ({ refetch }) => {
 
     const [addedAmount, setaddedAmount] = useState('');
     const [addedAddrOther, setaddedAddrOther] = useState('');
-    const [addedStakingIndex, setaddedStakingIndex] = useState('');
+
+    const { data: vaultAddress } = useReadContract({
+        address: contractStakingVaultFactoryAddress,
+        abi: contractStakingVaultFactoryAbi,
+        functionName: 'getVault',
+        args: [addedAddrOther],
+        query: { enabled: addedAddrOther.length === 42 },
+    })
 
     const { data: hash, isPending, writeContract } = useWriteContract({
         mutation: {
             onSuccess: () => {
                 setaddedAmount('');
                 setaddedAddrOther('');
-                setaddedStakingIndex('');
                 refetch();
                 toast({
                     title: "Le withdraw a bien été effectué",
@@ -42,10 +48,10 @@ const WithdrawOtherToken = ({ refetch }) => {
 
     const WithdrawOtherToken = async() => {
         writeContract({
-            address: contractStakingAddress,
-            abi: contractStakingAbi,
-            functionName: 'withdrawOtherToken',
-            args: [Number(addedAmount), addedAddrOther, Number(addedStakingIndex)],
+            address: vaultAddress,
+            abi: stakingVaultAbi,
+            functionName: 'withdraw',
+            args: [Number(addedAmount), address, address],
             account: address,
         })
     }
@@ -56,7 +62,7 @@ const WithdrawOtherToken = ({ refetch }) => {
     })
 
     return (
-        <FormCard icon="📤" title="Withdraw un autre token" description="Retire une partie de ton stake.">
+        <FormCard icon="📤" title="Withdraw un autre token" description="Retire une partie de ton stake — son vault est résolu automatiquement via la factory.">
             <Stack spacing={3}>
                 <FormControl>
                     <FormLabel fontSize="sm" color="whiteAlpha.600">Montant</FormLabel>
@@ -66,11 +72,7 @@ const WithdrawOtherToken = ({ refetch }) => {
                     <FormLabel fontSize="sm" color="whiteAlpha.600">Adresse du token</FormLabel>
                     <Input placeholder='0x...' value={addedAddrOther} onChange={(e) => setaddedAddrOther(e.target.value)} />
                 </FormControl>
-                <FormControl>
-                    <FormLabel fontSize="sm" color="whiteAlpha.600">Index du stake</FormLabel>
-                    <Input placeholder='0' value={addedStakingIndex} onChange={(e) => setaddedStakingIndex(e.target.value)} />
-                </FormControl>
-                <Button colorScheme='brand' onClick={WithdrawOtherToken} isLoading={isPending} loadingText="Envoi..." w="100%">
+                <Button colorScheme='brand' onClick={WithdrawOtherToken} isLoading={isPending} loadingText="Envoi..." w="100%" isDisabled={!vaultAddress}>
                     Withdraw
                 </Button>
             </Stack>
